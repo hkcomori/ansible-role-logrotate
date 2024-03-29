@@ -36,4 +36,13 @@
         {{ item.postrotate }}
     endscript{% endif %}
 
+{% if item.mail is defined %}{% for address in item.mail %}    mail {{ address }}
+{% endfor %}{% endif %}
+
+{% if item.nomail is defined %}    nomail{% endif %}
+
+{% if item.mailfirst is defined %}    mailfirst{% endif %}
+
+{% if item.maillast is defined %}    maillast{% endif %}
+
 }

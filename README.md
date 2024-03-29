@@ -81,6 +81,18 @@ This example is taken from [`molecule/default/converge.yml`](https://github.com/
       - name: example-dateyesterday
         path: "/var/log/example-dateyesterday/*.log"
         dateyesterday: true
+      - name: example-mailfirst
+        path: "/var/log/example-mailfirst/*.log"
+        mail:
+          - user1@example.com
+          - user2@example.com
+        mailfirst: true
+      - name: example-maillast
+        path: "/var/log/example-maillast/*.log"
+        mail:
+          - user1@example.com
+          - user2@example.com
+        maillast: true
 
   roles:
     - role: robertdebock.logrotate
@@ -115,6 +127,8 @@ The machine needs to be prepared. In CI this is done using [`molecule/default/pr
         - /var/log/example-script
         - /var/log/example-sharedscripts
         - /var/log/example-dateyesterday
+        - /var/log/example-mailfirst
+        - /var/log/example-maillast
 
     - name: Create log file
       ansible.builtin.copy:
@@ -131,6 +145,8 @@ The machine needs to be prepared. In CI this is done using [`molecule/default/pr
         - /var/log/example-script/app.log
         - /var/log/example-sharedscripts/app.log
         - /var/log/example-dateyesterday/app.log
+        - /var/log/example-mailfirst/app.log
+        - /var/log/example-maillast/app.log
         - /var/log/btmp
         - /var/log/wtmp
         - /var/log/hawkey.log
@@ -157,6 +173,11 @@ logrotate_compress: true
 
 # Use date extension on log file names
 logrotate_dateext: false
+
+# Send log files by mail
+logrotate_mail: []
+logrotate_mailfirst: false
+logrotate_maillast: false
 
 # User/Group for rotated log files (Loaded by OS-Specific vars if found, or and can be set manually)
 logrotate_user: "{{ _logrotate_user[ansible_distribution] | default(_logrotate_user['default']) }}"

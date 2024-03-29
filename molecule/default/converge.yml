@@ -8,6 +8,9 @@
     logrotate_frequency: daily
     logrotate_keep: 7
     logrotate_compress: true
+    logrotate_mail:
+      - user1@example.com
+      - user2@example.com
     logrotate_entries:
       - name: example
         path: "/var/log/example/*.log"
@@ -68,6 +71,21 @@
       - name: example-dateyesterday
         path: "/var/log/example-dateyesterday/*.log"
         dateyesterday: true
+      - name: example-mailfirst
+        path: "/var/log/example-mailfirst/*.log"
+        mail:
+          - user3@example.com
+          - user4@example.com
+        mailfirst: true
+      - name: example-maillast
+        path: "/var/log/example-maillast/*.log"
+        mail:
+          - user3@example.com
+          - user4@example.com
+        maillast: true
+      - name: example-nomail
+        path: "/var/log/example-nomail/*.log"
+        nomail: true
 
   roles:
     - role: ansible-role-logrotate

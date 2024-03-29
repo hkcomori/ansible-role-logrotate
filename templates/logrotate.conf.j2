@@ -28,6 +28,11 @@ compress
 #compress
 {% endif %}
 
+{% for address in logrotate_mail %}mail {{ address }}
+{% endfor %}
+{% if logrotate_mailfirst %}mailfirst{% endif %}
+{% if logrotate_maillast %}maillast{% endif %}
+
 # packages drop log rotation information into this directory
 include /etc/logrotate.d
 
