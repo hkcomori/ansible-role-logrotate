@@ -30,6 +30,33 @@
       - logrotate_dateext is boolean
     quiet: true
 
+- name: assert | Test logrotate_mail
+  ansible.builtin.assert:
+    that:
+      - item is string
+    quiet: true
+  with_items: "{{ logrotate_mail }}"
+
+- name: assert | Test logrotate_mailfirst
+  ansible.builtin.assert:
+    that:
+      - logrotate_mailfirst is defined
+      - logrotate_mailfirst is boolean
+    quiet: true
+
+- name: assert | Test logrotate_maillast
+  ansible.builtin.assert:
+    that:
+      - logrotate_maillast is defined
+      - logrotate_maillast is boolean
+    quiet: true
+
+- name: assert | Test logrotate_mailfirst and logrotate_maillast don't conflict
+  ansible.builtin.assert:
+    that:
+      - not (logrotate_mailfirst and logrotate_maillast)
+    quiet: true
+
 - name: assert | Test logrotate_user
   ansible.builtin.assert:
     that:
@@ -272,3 +299,67 @@
     label: "{{ item.name }}"
   when:
     - item.dateyesterday is defined
+
+- name: assert | Test mail in logrotate_entries
+  ansible.builtin.assert:
+    that:
+      - item.1 is string
+    quiet: true
+  loop: >-
+    {{
+      lookup(
+        'ansible.builtin.subelements',
+        logrotate_entries,
+        'mail',
+        {'skip_missing': True}
+      )
+    }}
+  loop_control:
+    label: "{{ item.0.name }} - {{ item.1 }}"
+  when:
+    - item.mail is defined
+
+- name: assert | Test nomail in logrotate_entries
+  ansible.builtin.assert:
+    that:
+      - item.nomail is boolean
+    quiet: true
+  loop: "{{ logrotate_entries }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - item.nomail is defined
+
+- name: assert | Test mailfirst in logrotate_entries
+  ansible.builtin.assert:
+    that:
+      - item.mailfirst is boolean
+    quiet: true
+  loop: "{{ logrotate_entries }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - item.mailfirst is defined
+
+- name: assert | Test maillast in logrotate_entries
+  ansible.builtin.assert:
+    that:
+      - item.maillast is boolean
+    quiet: true
+  loop: "{{ logrotate_entries }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - item.maillast is defined
+
+- name: assert | Test mailfirst and maillast in logrotate_entries
+  ansible.builtin.assert:
+    that:
+      - not (item.mailfirst and item.maillast)
+    quiet: true
+  loop: "{{ logrotate_entries }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - item.mailfirst is defined
+    - item.maillast is defined
