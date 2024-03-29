@@ -45,6 +45,12 @@ This example is taken from [`molecule/default/converge.yml`](https://github.com/
       - name: example-script
         path: "/var/log/example-script/*.log"
         postrotate: killall -HUP some_process_name
+      - name: example-mail
+        path: "/var/log/example-mail/*.log"
+        mail:
+          - user1@example.com
+          - user2@example.com
+        mailfirst: true
       - name: btmp
         path: /var/log/btmp
         missingok: true
@@ -157,6 +163,11 @@ logrotate_compress: true
 
 # Use date extension on log file names
 logrotate_dateext: false
+
+# Send log files by mail
+logrotate_mail: []
+logrotate_mailfirst: false
+logrotate_maillast: false
 
 # User/Group for rotated log files (Loaded by OS-Specific vars if found, or and can be set manually)
 logrotate_user: "{{ _logrotate_user[ansible_distribution] | default(_logrotate_user['default']) }}"

@@ -30,6 +30,33 @@
       - logrotate_dateext is boolean
     quiet: true
 
+- name: assert | Test logrotate_mail
+  ansible.builtin.assert:
+    that:
+      - item is string
+    quiet: true
+  with_items: "{{ logrotate_mail }}"
+
+- name: assert | Test logrotate_mailfirst
+  ansible.builtin.assert:
+    that:
+      - logrotate_mailfirst is defined
+      - logrotate_mailfirst is boolean
+    quiet: true
+
+- name: assert | Test logrotate_maillast
+  ansible.builtin.assert:
+    that:
+      - logrotate_maillast is defined
+      - logrotate_maillast is boolean
+    quiet: true
+
+- name: assert | Test logrotate_mailfirst and logrotate_maillast don't conflict
+  ansible.builtin.assert:
+    that:
+      - not (logrotate_mailfirst and logrotate_maillast)
+    quiet: true
+
 - name: assert | Test logrotate_user
   ansible.builtin.assert:
     that:

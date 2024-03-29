@@ -32,6 +32,12 @@
       - name: example-script
         path: "/var/log/example-script/*.log"
         postrotate: killall -HUP some_process_name
+      - name: example-mail
+        path: "/var/log/example-mail/*.log"
+        mail:
+          - user1@example.com
+          - user2@example.com
+        mailfirst: true
       - name: btmp
         path: /var/log/btmp
         missingok: true
