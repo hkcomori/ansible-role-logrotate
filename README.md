@@ -44,6 +44,7 @@ This example is taken from [`molecule/default/converge.yml`](https://github.com/
         delaycompress: true
       - name: example-script
         path: "/var/log/example-script/*.log"
+        prerotate: echo prerotate
         postrotate: killall -HUP some_process_name
       - name: btmp
         path: /var/log/btmp
